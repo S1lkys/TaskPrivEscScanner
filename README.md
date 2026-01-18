@@ -69,16 +69,6 @@ TaskPrivEscScanner.exe
 TaskPrivEscScanner.exe --export
 TaskPrivEscScanner.exe -e
 ```
-
-## Severity Levels
-
-| Severity | Description | Impact |
-|----------|-------------|--------|
-| **CRITICAL** | Writable binary/DLL, missing binary with writable parent, or MareBackup + writable PATH | Direct privilege escalation |
-| **HIGH** | SYSTEM task triggerable by low-priv users | Requires secondary vulnerability (DLL hijacking) |
-| **MEDIUM** | Elevated task triggerable by low-priv users | Potential elevation depending on context |
-| **LOW** | Permissive ACLs with limited impact | May be useful for persistence |
-
 ## Detection Capabilities
 
 ### 1. Writable Binaries
